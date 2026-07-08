@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+  <meta charset="UTF-8">
+  <title>خريطة بسيطة</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 100vh;
+      /* الخريطة تاخذ كل الشاشة */
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // إنشاء الخريطة وتحديد المركز والإحداثيات (عمّان كمثال)
+    var map = L.map('map').setView([31.9539, 35.9106], 13);
+
+    // إضافة طبقة OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/">OSM</a>'
+    }).addTo(map);
+
+    // إضافة علامة (Marker) على الموقع
+    L.marker([31.9539, 35.9106]).addTo(map)
+      .bindPopup('مرحبا! هذه عمان 🇯🇴')
+      .openPopup();
+    L.marker([32.55087, 35.85590]).addTo(map)
+      .bindPopup('مرحبا! هذه عمان 🇯🇴')
+      .openPopup();
+  </script>
+
+</body>
+
+</html>

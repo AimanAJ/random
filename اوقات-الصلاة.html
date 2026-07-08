@@ -1,0 +1,20 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>أوقات الصلاة</title>
+<style>body{font-family:sans-serif;max-width:420px;margin:20px auto;padding:16px}
+li{margin:6px 0}</style></head><body>
+<h3>أوقات الصلاة اليوم</h3>
+<button id="byGeo">حسب موقعي</button>
+<ul id="times"></ul>
+<script>
+async function load(lat,lon){
+  const r=await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=4`);
+  const j=await r.json(); const t=j.data.timings, list=times; list.innerHTML='';
+  ['Fajr','Dhuhr','Asr','Maghrib','Isha'].forEach(k=>{
+    const li=document.createElement('li'); li.textContent = `${k}: ${t[k]}`; list.appendChild(li);
+  });
+}
+byGeo.onclick=()=>navigator.geolocation.getCurrentPosition(p=>load(p.coords.latitude,p.coords.longitude),
+  _=>load(31.9539,35.9106));
+load(31.9539,35.9106);
+</script></body></html>

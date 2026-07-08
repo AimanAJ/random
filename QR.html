@@ -1,0 +1,15 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR Generator</title>
+<style>body{font-family:sans-serif;max-width:420px;margin:20px auto;padding:16px;text-align:center}
+input,button{padding:8px;width:100%;margin:6px 0}</style>
+</head><body>
+<h3>صنّع QR</h3>
+<input id="txt" placeholder="ألصق رابط أو نص">
+<button id="go">توليد</button>
+<div id="q"></div>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+const qr = new QRCode('q',{width:220,height:220});
+go.onclick = ()=>{ const v=txt.value.trim()||location.href; q.innerHTML=''; new QRCode('q',{text:v,width:220,height:220}); };
+</script></body></html>

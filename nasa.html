@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صورة اليوم الفلكية من ناسا</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<style>body {
+    font-family: Arial, sans-serif;
+    background-color: #121222;
+    color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+    background-color: #1e1e3e;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+    color: #a7a7ff;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #ffffff;
+}
+
+#apod-image {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+#apod-explanation {
+    text-align: justify;
+    line-height: 1.6;
+    margin-top: 20px;
+    color: #dcdcdc;
+}
+
+#apod-date {
+    color: #a7a7ff;
+    font-style: italic;
+}
+
+#loading {
+    font-size: 1.2em;
+    padding: 40px;
+}
+
+.hidden {
+    display: none;
+}</style>
+    <div class="container">
+        <h1>صورة اليوم الفلكية 🪐</h1>
+        
+        <div id="loading">جار التحميل...</div>
+
+        <div id="apod-container" class="hidden">
+            <h2 id="apod-title"></h2>
+            <p id="apod-date"></p>
+            <img id="apod-image" src="" alt="صورة اليوم الفلكية من ناسا">
+            <p id="apod-explanation"></p>
+        </div>
+    </div>
+
+    <script>// انتظر حتى يتم تحميل الصفحة بالكامل
+window.addEventListener('load', () => {
+    fetchApod();
+});
+
+async function fetchApod() {
+    // استخدمنا DEMO_KEY وهو مفتاح تجريبي توفره ناسا للجميع
+    const apiKey = 'DEMO_KEY'; 
+    const apiUrl = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}`;
+
+    const loadingElement = document.getElementById('loading');
+    const containerElement = document.getElementById('apod-container');
+
+    try {
+        // 1. اطلب البيانات من API ناسا
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        // 2. تحقق إذا كانت البيانات تحتوي على صورة (أحياناً تكون فيديو)
+        if (data.media_type === 'image') {
+            // 3. اعثر على العناصر في ملف HTML
+            const titleElement = document.getElementById('apod-title');
+            const dateElement = document.getElementById('apod-date');
+            const imageElement = document.getElementById('apod-image');
+            const explanationElement = document.getElementById('apod-explanation');
+            
+            // 4. املأ العناصر بالبيانات التي تم جلبها
+            titleElement.textContent = data.title;
+            dateElement.textContent = `تاريخ: ${data.date}`;
+            imageElement.src = data.hdurl; // استخدمنا الصورة عالية الدقة
+            imageElement.alt = data.title;
+            explanationElement.textContent = data.explanation;
+
+            // إخفاء رسالة التحميل وإظهار المحتوى
+            loadingElement.classList.add('hidden');
+            containerElement.classList.remove('hidden');
+
+        } else {
+            // في حال كان المحتوى فيديو أو نوع آخر
+            loadingElement.textContent = "محتوى اليوم ليس صورة، حاول مجدداً غداً!";
+        }
+
+    } catch (error) {
+        // في حال حدوث خطأ في الاتصال
+        console.error('Error fetching APOD data:', error);
+        loadingElement.textContent = "حدث خطأ أثناء جلب البيانات. يرجى المحاولة مرة أخرى.";
+    }
+}</script>
+</body>
+</html>
