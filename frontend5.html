@@ -1,0 +1,2877 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GLM-4.5 Elite Multi-Page Designer Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --secondary: #7c3aed;
+      --accent: #ec4899;
+      --dark: #0f172a;
+      --darker: #020617;
+      --light: #f1f5f9;
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Tajawal', 'Poppins', sans-serif;
+      background: var(--darker);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ultra Premium Background */
+    .bg-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .gradient-bg {
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 20% 50%, rgba(79, 70, 229, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(124, 58, 237, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 40% 20%, rgba(236, 72, 153, 0.08) 0%, transparent 50%),
+                  radial-gradient(circle at 60% 70%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+      animation: gradientShift 40s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.2); }
+    }
+
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .particle {
+      position: absolute;
+      background: var(--glass);
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0;
+      animation: floatUp 20s linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.3;
+      }
+      90% {
+        opacity: 0.3;
+      }
+      100% {
+        transform: translateY(-100vh) scale(1);
+        opacity: 0;
+      }
+    }
+
+    /* Elite Loader */
+    .loader-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.98);
+      backdrop-filter: blur(30px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.8s, visibility 0.8s;
+    }
+
+    .loader-container.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader {
+      width: 150px;
+      height: 150px;
+      position: relative;
+    }
+
+    .loader-circle {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: var(--primary);
+      border-right-color: var(--secondary);
+      animation: spin 2s linear infinite;
+    }
+
+    .loader-circle:nth-child(2) {
+      width: 80%;
+      height: 80%;
+      top: 10%;
+      left: 10%;
+      border-top-color: var(--accent);
+      border-right-color: var(--primary);
+      animation-direction: reverse;
+      animation-duration: 2.5s;
+    }
+
+    .loader-circle:nth-child(3) {
+      width: 60%;
+      height: 60%;
+      top: 20%;
+      left: 20%;
+      border-top-color: var(--secondary);
+      border-right-color: var(--accent);
+      animation-duration: 3s;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loader-text {
+      margin-top: 40px;
+      font-size: 22px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      letter-spacing: 2px;
+    }
+
+    .loader-progress {
+      width: 250px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      margin-top: 20px;
+      overflow: hidden;
+    }
+
+    .loader-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+      border-radius: 3px;
+      width: 0%;
+      animation: progress 4s ease-in-out infinite;
+    }
+
+    @keyframes progress {
+      0% { width: 0%; }
+      50% { width: 70%; }
+      100% { width: 100%; }
+    }
+
+    /* Main Container */
+    .app-container {
+      max-width: 1800px;
+      margin: 0 auto;
+      padding: 30px;
+      opacity: 0;
+      animation: fadeIn 1.2s ease forwards;
+      animation-delay: 0.8s;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* Elite Header */
+    .header {
+      text-align: center;
+      margin-bottom: 50px;
+      position: relative;
+    }
+
+    .header::after {
+      content: "";
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+      border-radius: 3px;
+    }
+
+    .header h1 {
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 15px;
+      letter-spacing: -1px;
+    }
+
+    .header p {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      color: var(--text-secondary);
+      font-weight: 300;
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Main Layout */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    @media (min-width: 1200px) {
+      .main-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* Elite Glass Cards */
+    .glass-card {
+      background: var(--glass);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border-radius: 25px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--glass-border);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.08), rgba(236, 72, 153, 0.03));
+      opacity: 0;
+      transition: var(--transition);
+      z-index: -1;
+    }
+
+    .glass-card:hover::before {
+      opacity: 1;
+    }
+
+    .glass-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Chat Section */
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      height: 550px;
+    }
+
+    .messages {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 20px;
+      padding: 20px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    }
+
+    .messages::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .messages::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .messages::-webkit-scrollbar-thumb {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+    }
+
+    .msg {
+      margin-bottom: 18px;
+      padding: 15px 20px;
+      border-radius: 20px;
+      max-width: 80%;
+      animation: msgSlide 0.4s ease;
+      position: relative;
+      word-wrap: break-word;
+      line-height: 1.6;
+    }
+
+    @keyframes msgSlide {
+      from { 
+        opacity: 0; 
+        transform: translateY(15px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+
+    .user {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      margin-left: auto;
+      border-bottom-right-radius: 8px;
+      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
+    }
+
+    .bot {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+      margin-right: auto;
+      border-bottom-left-radius: 8px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .input-container {
+      display: flex;
+      gap: 15px;
+    }
+
+    .input-box {
+      flex: 1;
+      position: relative;
+    }
+
+    .input-box textarea {
+      width: 100%;
+      min-height: 80px;
+      max-height: 150px;
+      padding: 18px 20px;
+      border-radius: 20px;
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      font-size: 16px;
+      resize: vertical;
+      outline: none;
+      transition: var(--transition);
+      font-family: inherit;
+      line-height: 1.5;
+    }
+
+    .input-box textarea:focus {
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2);
+    }
+
+    .btn {
+      padding: 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      width: auto;
+      padding: 0 25px;
+      font-size: 18px;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--secondary), var(--accent));
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(124, 58, 237, 0.4);
+    }
+
+    /* Multi-Page Options */
+    .multi-page-options {
+      background: rgba(79, 70, 229, 0.1);
+      border: 1px solid rgba(79, 70, 229, 0.3);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .multi-page-options h4 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .page-count-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .page-count-container label {
+      font-size: 16px;
+      color: var(--text-secondary);
+    }
+
+    .page-count-input {
+      width: 80px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      font-size: 16px;
+      text-align: center;
+      outline: none;
+    }
+
+    /* Custom Pages Section */
+    .custom-pages-section {
+      margin-top: 20px;
+    }
+
+    .custom-pages-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .custom-pages-header h5 {
+      font-size: 16px;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .add-page-btn {
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: rgba(79, 70, 229, 0.2);
+      color: var(--primary);
+      border: 1px solid rgba(79, 70, 229, 0.3);
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: var(--transition);
+    }
+
+    .add-page-btn:hover {
+      background: rgba(79, 70, 229, 0.3);
+    }
+
+    .custom-pages-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .custom-page-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .custom-page-input {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      font-size: 14px;
+      outline: none;
+    }
+
+    .custom-page-input:focus {
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .remove-page-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(236, 72, 153, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(236, 72, 153, 0.2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .remove-page-btn:hover {
+      background: rgba(236, 72, 153, 0.2);
+    }
+
+    /* Elite Design Options */
+    .design-options h3 {
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .options-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .option-group {
+      margin-bottom: 20px;
+    }
+
+    .option-group label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+
+    .option-group select,
+    .option-group input {
+      width: 100%;
+      padding: 15px 18px;
+      border-radius: 15px;
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      font-size: 16px;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .option-group select:focus,
+    .option-group input:focus {
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2);
+    }
+
+    .option-group select option {
+      background: var(--darker);
+      color: var(--text-primary);
+    }
+
+    .slider-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .slider {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 8px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+    }
+
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      transition: var(--transition);
+    }
+
+    .slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .slider-value {
+      min-width: 40px;
+      text-align: center;
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 18px;
+    }
+
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .toggle {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 30px;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.1);
+      transition: var(--transition);
+      border-radius: 30px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 22px;
+      width: 22px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: var(--transition);
+      border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+    }
+
+    input:checked + .toggle-slider:before {
+      transform: translateX(30px);
+    }
+
+    /* Results Section */
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    @media (min-width: 1200px) {
+      .results-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .code-section,
+    .preview-section {
+      display: flex;
+      flex-direction: column;
+      height: 600px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .section-header h3 {
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .code-container {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .code-header {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .code-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+    }
+
+    .code-dot.red { background: #ff5f56; }
+    .code-dot.yellow { background: #ffbd2e; }
+    .code-dot.green { background: #27c93f; }
+
+    .code-filename {
+      color: var(--text-secondary);
+      font-size: 15px;
+      margin-right: auto;
+    }
+
+    pre {
+      height: calc(100% - 50px);
+      overflow-y: auto;
+      margin: 0;
+      padding: 20px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .preview-container {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .preview-header {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .preview-device {
+      display: flex;
+      gap: 12px;
+      margin-left: auto;
+    }
+
+    .device-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .device-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--primary);
+    }
+
+    .device-btn.active {
+      background: rgba(79, 70, 229, 0.3);
+      color: var(--primary);
+    }
+
+    iframe {
+      width: 100%;
+      height: calc(100% - 50px);
+      border: none;
+      background: white;
+      border-radius: 0 0 20px 20px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      padding: 12px 20px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+      border: 1px solid var(--glass-border);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .action-btn:hover {
+      background: rgba(79, 70, 229, 0.2);
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    /* Pages List */
+    .pages-list {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .pages-list h4 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: var(--text-primary);
+    }
+
+    .pages-list-content {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .page-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 15px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      transition: var(--transition);
+    }
+
+    .page-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .page-item.active {
+      background: rgba(79, 70, 229, 0.2);
+      border: 1px solid rgba(79, 70, 229, 0.3);
+    }
+
+    .page-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .page-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .page-name {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .page-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .page-action-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .page-action-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--primary);
+    }
+
+    /* Floating Action Button */
+    .fab {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      box-shadow: 0 10px 30px rgba(79, 70, 229, 0.5);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      z-index: 100;
+      transition: var(--transition);
+    }
+
+    .fab:hover {
+      transform: scale(1.15);
+      box-shadow: 0 15px 40px rgba(79, 70, 229, 0.7);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(20px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: var(--glass);
+      backdrop-filter: blur(30px);
+      border-radius: 25px;
+      padding: 30px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--glass-border);
+      position: relative;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-header h3 {
+      font-size: 1.8rem;
+      color: var(--text-primary);
+    }
+
+    .modal-close {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--primary);
+    }
+
+    .modal-body {
+      margin-bottom: 20px;
+    }
+
+    .progress-container {
+      margin-bottom: 20px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .progress-bar {
+      height: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 5px;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+    }
+
+    .modal-btn {
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .modal-btn-cancel {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-primary);
+    }
+
+    .modal-btn-cancel:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .modal-btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+    }
+
+    .modal-btn-primary:hover {
+      background: linear-gradient(135deg, var(--secondary), var(--accent));
+    }
+
+    /* Ultra Responsive Design */
+    @media (max-width: 767px) {
+      .app-container {
+        padding: 20px;
+      }
+      
+      .header h1 {
+        font-size: 2.2rem;
+      }
+      
+      .glass-card {
+        padding: 25px;
+      }
+      
+      .chat-container,
+      .code-section,
+      .preview-section {
+        height: 450px;
+      }
+      
+      .input-container {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+        height: 55px;
+      }
+    }
+
+    /* Ultra Small Devices */
+    @media (max-width: 330px) {
+      .app-container {
+        padding: 15px;
+      }
+      
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .glass-card {
+        padding: 20px;
+      }
+      
+      .chat-container,
+      .code-section,
+      .preview-section {
+        height: 400px;
+      }
+      
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .action-buttons {
+        justify-content: center;
+      }
+      
+      .fab {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+        bottom: 20px;
+        left: 20px;
+      }
+    }
+
+    /* Modern Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(79, 70, 229, 0.5);
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(79, 70, 229, 0.8);
+    }
+
+    /* Loading State */
+    .loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      border-radius: 20px;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .loading-text {
+      margin-top: 20px;
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+
+    /* Site Identity Detection */
+    .site-identity {
+      background: rgba(79, 70, 229, 0.1);
+      border: 1px solid rgba(79, 70, 229, 0.3);
+      border-radius: 15px;
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .site-identity-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: white;
+    }
+
+    .site-identity-info h4 {
+      font-size: 18px;
+      margin-bottom: 5px;
+      color: var(--text-primary);
+    }
+
+    .site-identity-info p {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+  <!-- Elite Loader -->
+  <div class="loader-container" id="loader">
+    <div class="loader">
+      <div class="loader-circle"></div>
+      <div class="loader-circle"></div>
+      <div class="loader-circle"></div>
+    </div>
+    <div class="loader-text">جاري تحميل النظام الاحترافي المتطور...</div>
+    <div class="loader-progress">
+      <div class="loader-progress-bar"></div>
+    </div>
+  </div>
+
+  <!-- Background -->
+  <div class="bg-container">
+    <div class="gradient-bg"></div>
+    <div class="particles" id="particles"></div>
+  </div>
+
+  <!-- Main App -->
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <h1>GLM-4.5 Elite Multi-Page Designer Studio</h1>
+      <p>نظام تصميم احترافي فائق التطور لإنشاء مواقع متعددة الصفحات بخبرة 30+ عام</p>
+    </header>
+
+    <!-- Main Grid -->
+    <div class="main-grid">
+      <!-- Chat Section -->
+      <div class="glass-card chat-container">
+        <div class="messages" id="messages"></div>
+        <div class="input-container">
+          <div class="input-box">
+            <textarea id="userInput" placeholder="صف الموقع الذي تريد تصميمه بالتفصيل..."></textarea>
+          </div>
+          <button class="btn" onclick="improvePrompt()" title="تحسين الأمر">
+            <i class="fas fa-magic"></i>
+          </button>
+          <button class="btn btn-primary" onclick="sendCode()">
+            <i class="fas fa-rocket"></i> إنشاء
+          </button>
+        </div>
+        <div class="loading-overlay" id="loading" style="display: none;">
+          <div class="loading-spinner"></div>
+          <div class="loading-text">جاري إنشاء تصميم احترافي...</div>
+        </div>
+      </div>
+
+      <!-- Design Options -->
+      <div class="glass-card design-options">
+        <h3><i class="fas fa-sliders-h"></i> خيارات التصميم الاحترافية</h3>
+        
+        <!-- Multi-Page Options -->
+        <div class="multi-page-options">
+          <h4><i class="fas fa-file-alt"></i> خيارات الصفحات المتعددة</h4>
+          
+          <!-- Page Types -->
+          <div class="page-types-container">
+            <div class="page-type">
+              <input type="checkbox" id="page-home" checked>
+              <label for="page-home">الصفحة الرئيسية</label>
+            </div>
+            <div class="page-type">
+              <input type="checkbox" id="page-about">
+              <label for="page-about">من نحن</label>
+            </div>
+            <div class="page-type">
+              <input type="checkbox" id="page-services">
+              <label for="page-services">خدماتنا</label>
+            </div>
+            <div class="page-type">
+              <input type="checkbox" id="page-contact">
+              <label for="page-contact">تواصل معنا</label>
+            </div>
+            <div class="page-type">
+              <input type="checkbox" id="page-blog">
+              <label for="page-blog">المدونة</label>
+            </div>
+            <div class="page-type">
+              <input type="checkbox" id="page-portfolio">
+              <label for="page-portfolio">معرض الأعمال</label>
+            </div>
+            <div class="page-type">
+              <input type="checkbox" id="page-shop">
+              <label for="page-shop">المتجر</label>
+            </div>
+            <div class="page-type">
+              <input type="checkbox" id="page-faq">
+              <label for="page-faq">الأسئلة الشائعة</label>
+            </div>
+          </div>
+          
+          <!-- Custom Pages Section -->
+          <div class="custom-pages-section">
+            <div class="custom-pages-header">
+              <h5>صفحات مخصصة</h5>
+              <button class="add-page-btn" onclick="addCustomPage()">
+                <i class="fas fa-plus"></i> إضافة
+              </button>
+            </div>
+            <div class="custom-pages-list" id="customPagesList">
+              <!-- Custom pages will be added here dynamically -->
+            </div>
+          </div>
+        </div>
+        
+        <!-- Site Identity Detection -->
+        <div class="site-identity" id="siteIdentity" style="display: none;">
+          <div class="site-identity-icon" id="siteIcon">
+            <i class="fas fa-globe"></i>
+          </div>
+          <div class="site-identity-info">
+            <h4 id="siteType">نوع الموقع</h4>
+            <p id="siteDescription">وصف الموقع</p>
+          </div>
+        </div>
+        
+        <div class="options-grid">
+          <div class="option-group">
+            <label>نوع التصميم</label>
+            <select id="designType">
+              <option value="modern">حديث وعصري</option>
+              <option value="minimal">بسيط وأنيق</option>
+              <option value="creative">إبداعي وفني</option>
+              <option value="corporate">احترافي وشركات</option>
+              <option value="ecommerce">متجر إلكتروني</option>
+              <option value="portfolio">معرض أعمال</option>
+              <option value="landing">صفحة هبوط</option>
+              <option value="blog">مدونة</option>
+              <option value="saas">تطبيق SaaS</option>
+              <option value="dashboard">لوحة تحكم</option>
+              <option value="news">موقع أخبار</option>
+              <option value="education">موقع تعليمي</option>
+              <option value="restaurant">مطعم</option>
+              <option value="hotel">فندق</option>
+              <option value="real-estate">عقارات</option>
+            </select>
+          </div>
+
+          <div class="option-group">
+            <label>نظام الألوان</label>
+            <select id="colorScheme">
+              <option value="dark">داكن احترافي</option>
+              <option value="light">فاتح عصري</option>
+              <option value="vibrant">ألوان زاهية</option>
+              <option value="pastel">ألوان هادئة</option>
+              <option value="monochrome">أحادي اللون</option>
+              <option value="gradient">تدرجات لونية</option>
+              <option value="nature">ألوان الطبيعة</option>
+              <option value="sunset">غروب الشمس</option>
+              <option value="ocean">ألوان المحيط</option>
+              <option value="custom">مخصص</option>
+            </select>
+          </div>
+
+          <div class="option-group">
+            <label>مستوى الإبداع</label>
+            <div class="slider-container">
+              <input type="range" min="1" max="10" value="10" class="slider" id="creativityLevel">
+              <span class="slider-value" id="creativityValue">10</span>
+            </div>
+          </div>
+
+          <div class="option-group">
+            <label>مستوى التفاصيل</label>
+            <div class="slider-container">
+              <input type="range" min="1" max="10" value="9" class="slider" id="detailLevel">
+              <span class="slider-value" id="detailValue">9</span>
+            </div>
+          </div>
+
+          <div class="option-group">
+            <div class="toggle-container">
+              <span>الرسوم المتحركة المتقدمة</span>
+              <label class="toggle">
+                <input type="checkbox" id="advancedAnimations" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="option-group">
+            <div class="toggle-container">
+              <span>تأثيرات التمرير</span>
+              <label class="toggle">
+                <input type="checkbox" id="scrollEffects" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="option-group">
+            <div class="toggle-container">
+              <span>التصميم المتجاوب</span>
+              <label class="toggle">
+                <input type="checkbox" id="responsiveDesign" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="option-group">
+            <div class="toggle-container">
+              <span>تحسين محركات البحث</span>
+              <label class="toggle">
+                <input type="checkbox" id="seoOptimization" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="option-group">
+            <div class="toggle-container">
+              <span>وضع داكن/فاتح</span>
+              <label class="toggle">
+                <input type="checkbox" id="darkModeToggle" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="option-group">
+            <div class="toggle-container">
+              <span>تحسين الأداء</span>
+              <label class="toggle">
+                <input type="checkbox" id="performanceOptimization" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="option-group">
+            <div class="toggle-container">
+              <span>صور ذات صلة</span>
+              <label class="toggle">
+                <input type="checkbox" id="relevantImages" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="option-group">
+            <div class="toggle-container">
+              <span>تسلسل منطقي</span>
+              <label class="toggle">
+                <input type="checkbox" id="logicalSequence" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pages List -->
+    <div class="glass-card" id="pagesListContainer" style="display: none;">
+      <div class="pages-list">
+        <h4><i class="fas fa-file-alt"></i> صفحات الموقع</h4>
+        <div class="pages-list-content" id="pagesListContent"></div>
+      </div>
+      <div class="action-buttons">
+        <button class="action-btn" onclick="downloadAllPages()">
+          <i class="fas fa-download"></i> تحميل جميع الصفحات (ZIP)
+        </button>
+        <button class="action-btn" onclick="previewAllPages()">
+          <i class="fas fa-eye"></i> معاينة جميع الصفحات
+        </button>
+      </div>
+    </div>
+
+    <!-- Results Grid -->
+    <div class="results-grid">
+      <!-- Code Section -->
+      <div class="glass-card code-section">
+        <div class="section-header">
+          <h3><i class="fas fa-code"></i> الكود الناتج</h3>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <div class="code-dot red"></div>
+            <div class="code-dot yellow"></div>
+            <div class="code-dot green"></div>
+            <div class="code-filename" id="codeFilename">index.html</div>
+          </div>
+          <pre><code id="codeOutput" class="language-html"></code></pre>
+        </div>
+        <div class="action-buttons">
+          <button class="action-btn" onclick="copyCode()">
+            <i class="fas fa-copy"></i> نسخ
+          </button>
+          <button class="action-btn" onclick="downloadCurrentPage()">
+            <i class="fas fa-download"></i> تنزيل الصفحة
+          </button>
+          <button class="action-btn" onclick="formatCode()">
+            <i class="fas fa-indent"></i> تنسيق
+          </button>
+          <button class="action-btn" onclick="shareDesign()">
+            <i class="fas fa-share-alt"></i> مشاركة
+          </button>
+        </div>
+      </div>
+
+      <!-- Preview Section -->
+      <div class="glass-card preview-section">
+        <div class="section-header">
+          <h3><i class="fas fa-eye"></i> معاينة</h3>
+        </div>
+        <div class="preview-container">
+          <div class="preview-header">
+            <div class="code-dot red"></div>
+            <div class="code-dot yellow"></div>
+            <div class="code-dot green"></div>
+            <div class="preview-device">
+              <div class="device-btn active" onclick="setPreviewDevice('desktop')" title="سطح المكتب">
+                <i class="fas fa-desktop"></i>
+              </div>
+              <div class="device-btn" onclick="setPreviewDevice('tablet')" title="جهاز لوحي">
+                <i class="fas fa-tablet-alt"></i>
+              </div>
+              <div class="device-btn" onclick="setPreviewDevice('mobile')" title="جوال">
+                <i class="fas fa-mobile-alt"></i>
+              </div>
+            </div>
+          </div>
+          <iframe id="previewFrame"></iframe>
+        </div>
+        <div class="action-buttons">
+          <button class="action-btn" onclick="refreshPreview()">
+            <i class="fas fa-sync-alt"></i> تحديث
+          </button>
+          <button class="action-btn" onclick="openInNewTab()">
+            <i class="fas fa-external-link-alt"></i> فتح في تبويب جديد
+          </button>
+          <button class="action-btn" onclick="toggleFullscreen()">
+            <i class="fas fa-expand"></i> ملء الشاشة
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">عنوان النافذة</h3>
+        <div class="modal-close" onclick="closeModal()">
+          <i class="fas fa-times"></i>
+        </div>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Modal content will be inserted here -->
+      </div>
+      <div class="modal-footer" id="modalFooter">
+        <!-- Modal footer will be inserted here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Action Button -->
+  <button class="fab" onclick="showHelp()">
+    <i class="fas fa-question"></i>
+  </button>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script>
+    // API Configuration
+    const API_KEY = "91f891d9794d46c59c38b09be48de3a8.GyY4S2JpdLZtG5pc";
+    const API_URL = "https://open.bigmodel.cn/api/paas/v4/chat/completions";
+
+    // Initialize loader
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('hidden');
+      }, 3000);
+    });
+
+    // Create particles
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 40;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Random size
+        const size = Math.random() * 8 + 3;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Random position
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        
+        // Random animation duration
+        particle.style.animationDuration = `${Math.random() * 25 + 20}s`;
+        particle.style.animationDelay = `${Math.random() * 5}s`;
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    createParticles();
+
+    // Update slider values
+    document.getElementById('creativityLevel').addEventListener('input', function() {
+      document.getElementById('creativityValue').textContent = this.value;
+    });
+
+    document.getElementById('detailLevel').addEventListener('input', function() {
+      document.getElementById('detailValue').textContent = this.value;
+    });
+
+    // Global variables for multi-page support
+    let sitePages = [];
+    let currentPageIndex = 0;
+    let customPages = [];
+
+    // Site Identity Detection
+    function detectSiteIdentity(text) {
+      const siteIdentityDiv = document.getElementById('siteIdentity');
+      const siteIcon = document.getElementById('siteIcon');
+      const siteType = document.getElementById('siteType');
+      const siteDescription = document.getElementById('siteDescription');
+      
+      // Keywords for different site types
+      const siteTypes = {
+        ecommerce: {
+          keywords: ['متجر', 'منتجات', 'تسوق', 'بيع', 'شراء', 'سلة', 'دفع', 'ecommerce', 'shop', 'product', 'cart'],
+          icon: 'fa-shopping-cart',
+          type: 'متجر إلكتروني',
+          description: 'موقع لبيع المنتجات والخدمات عبر الإنترنت'
+        },
+        portfolio: {
+          keywords: ['معرض', 'أعمال', 'بورتفوليو', 'portfolio', 'أعمال سابقة', 'مشاريع', 'أمثلة'],
+          icon: 'fa-briefcase',
+          type: 'معرض أعمال',
+          description: 'موقع لعرض الأعمال والمشاريع السابقة'
+        },
+        blog: {
+          keywords: ['مدونة', 'مقالات', 'blog', 'أخبار', 'مقال', 'كتابة', 'نشر'],
+          icon: 'fa-blog',
+          type: 'مدونة',
+          description: 'موقع لنشر المقالات والمحتوى النصي'
+        },
+        corporate: {
+          keywords: ['شركة', 'corporate', 'مؤسسة', 'خدمات', 'عن الشركة', 'فريق', 'عملاء'],
+          icon: 'fa-building',
+          type: 'شركة',
+          description: 'موقع شركة لتقديم خدمات أو معلومات عن الشركة'
+        },
+        saas: {
+          keywords: ['saas', 'برنامج', 'تطبيق', 'software', 'خدمة', 'اشتراك', 'pricing'],
+          icon: 'fa-cloud',
+          type: 'تطبيق SaaS',
+          description: 'تطبيق برمجي كخدمة عبر الإنترنت'
+        },
+        dashboard: {
+          keywords: ['لوحة', 'dashboard', 'تحكم', 'إحصائيات', 'بيانات', 'رسوم بيانية'],
+          icon: 'fa-chart-line',
+          type: 'لوحة تحكم',
+          description: 'لوحة تحكم لعرض البيانات والإحصائيات'
+        },
+        news: {
+          keywords: ['أخبار', 'news', 'صحيفة', 'مقالات', 'تحديثات', 'حدث'],
+          icon: 'fa-newspaper',
+          type: 'موقع أخبار',
+          description: 'موقع لنشر الأخبار والتحديثات'
+        },
+        education: {
+          keywords: ['تعليم', 'education', 'دورة', 'كورس', 'تعلم', 'مدرسة', 'جامعة'],
+          icon: 'fa-graduation-cap',
+          type: 'موقع تعليمي',
+          description: 'موقع لتقديم المحتوى التعليمي والدورات'
+        },
+        restaurant: {
+          keywords: ['مطعم', 'restaurant', 'وجبات', 'قائمة', 'حجز', 'توصيل'],
+          icon: 'fa-utensils',
+          type: 'مطعم',
+          description: 'موقع مطعم لعرض القائمة والحجز'
+        },
+        hotel: {
+          keywords: ['فندق', 'hotel', 'غرف', 'حجز', 'إقامة', 'سفر'],
+          icon: 'fa-bed',
+          type: 'فندق',
+          description: 'موقع فندق لحجز الغرف والإقامة'
+        },
+        'real-estate': {
+          keywords: ['عقارات', 'real estate', 'شقق', 'بيوت', 'بيع', 'إيجار'],
+          icon: 'fa-home',
+          type: 'عقارات',
+          description: 'موقع لعرض وبيع العقارات'
+        }
+      };
+      
+      // Detect site type based on keywords
+      let detectedType = null;
+      let maxMatches = 0;
+      
+      for (const [type, data] of Object.entries(siteTypes)) {
+        let matches = 0;
+        for (const keyword of data.keywords) {
+          if (text.toLowerCase().includes(keyword.toLowerCase())) {
+            matches++;
+          }
+        }
+        if (matches > maxMatches) {
+          maxMatches = matches;
+          detectedType = type;
+        }
+      }
+      
+      // Show site identity if detected
+      if (detectedType && maxMatches > 0) {
+        const siteData = siteTypes[detectedType];
+        siteIcon.innerHTML = `<i class="fas ${siteData.icon}"></i>`;
+        siteType.textContent = siteData.type;
+        siteDescription.textContent = siteData.description;
+        siteIdentityDiv.style.display = 'flex';
+        
+        // Update design type select
+        document.getElementById('designType').value = detectedType;
+        
+        return detectedType;
+      }
+      
+      // Hide if not detected
+      siteIdentityDiv.style.display = 'none';
+      return null;
+    }
+
+    // Add custom page
+    function addCustomPage() {
+      const customPagesList = document.getElementById('customPagesList');
+      const pageItem = document.createElement('div');
+      pageItem.className = 'custom-page-item';
+      
+      const pageId = `custom-page-${Date.now()}`;
+      pageItem.innerHTML = `
+        <input type="text" class="custom-page-input" placeholder="اسم الصفحة" id="${pageId}">
+        <button class="remove-page-btn" onclick="removeCustomPage(this)">
+          <i class="fas fa-trash"></i>
+        </button>
+      `;
+      
+      customPagesList.appendChild(pageItem);
+      
+      // Focus on the new input
+      document.getElementById(pageId).focus();
+    }
+
+    // Remove custom page
+    function removeCustomPage(button) {
+      button.parentElement.remove();
+    }
+
+    // Get selected page types
+    function getSelectedPageTypes() {
+      const pageTypes = [];
+      const checkboxes = document.querySelectorAll('.page-type input[type="checkbox"]:checked');
+      
+      checkboxes.forEach(checkbox => {
+        const pageId = checkbox.id.replace('page-', '');
+        pageTypes.push(pageId);
+      });
+      
+      // Add custom pages
+      const customPageInputs = document.querySelectorAll('.custom-page-input');
+      customPageInputs.forEach(input => {
+        if (input.value.trim()) {
+          pageTypes.push({
+            type: 'custom',
+            name: input.value.trim()
+          });
+        }
+      });
+      
+      return pageTypes;
+    }
+
+    // Generate pages based on selected types
+    function generatePages(siteType, pageTypes) {
+      const pages = [];
+      
+      // Default page configurations
+      const pageConfigs = {
+        home: {
+          name: 'الصفحة الرئيسية',
+          filename: 'index.html',
+          icon: 'fa-home',
+          description: 'الصفحة الرئيسية للموقع'
+        },
+        about: {
+          name: 'من نحن',
+          filename: 'about.html',
+          icon: 'fa-info-circle',
+          description: 'صفحة معلومات عن الشركة'
+        },
+        services: {
+          name: 'خدماتنا',
+          filename: 'services.html',
+          icon: 'fa-cogs',
+          description: 'صفحة عرض الخدمات'
+        },
+        contact: {
+          name: 'تواصل معنا',
+          filename: 'contact.html',
+          icon: 'fa-envelope',
+          description: 'صفحة الاتصال بنا'
+        },
+        blog: {
+          name: 'المدونة',
+          filename: 'blog.html',
+          icon: 'fa-blog',
+          description: 'صفحة المدونة والمقالات'
+        },
+        portfolio: {
+          name: 'معرض الأعمال',
+          filename: 'portfolio.html',
+          icon: 'fa-briefcase',
+          description: 'صفحة معرض الأعمال'
+        },
+        shop: {
+          name: 'المتجر',
+          filename: 'shop.html',
+          icon: 'fa-shopping-cart',
+          description: 'صفحة المتجر والمنتجات'
+        },
+        faq: {
+          name: 'الأسئلة الشائعة',
+          filename: 'faq.html',
+          icon: 'fa-question-circle',
+          description: 'صفحة الأسئلة الشائعة'
+        }
+      };
+      
+      // Generate pages based on selected types
+      pageTypes.forEach(pageType => {
+        if (typeof pageType === 'string') {
+          // Standard page type
+          if (pageConfigs[pageType]) {
+            pages.push({
+              ...pageConfigs[pageType],
+              type: pageType,
+              siteType: siteType
+            });
+          }
+        } else if (pageType.type === 'custom') {
+          // Custom page type
+          const filename = pageType.name.toLowerCase().replace(/\s+/g, '-') + '.html';
+          pages.push({
+            name: pageType.name,
+            filename: filename,
+            icon: 'fa-file',
+            description: `صفحة ${pageType.name}`,
+            type: 'custom',
+            siteType: siteType
+          });
+        }
+      });
+      
+      return pages;
+    }
+
+    // Update pages list UI
+    function updatePagesListUI() {
+      const pagesListContent = document.getElementById('pagesListContent');
+      pagesListContent.innerHTML = '';
+      
+      sitePages.forEach((page, index) => {
+        const pageItem = document.createElement('div');
+        pageItem.className = `page-item ${index === currentPageIndex ? 'active' : ''}`;
+        pageItem.onclick = () => selectPage(index);
+        
+        pageItem.innerHTML = `
+          <div class="page-info">
+            <div class="page-icon">
+              <i class="fas ${page.icon}"></i>
+            </div>
+            <div class="page-name">${page.name}</div>
+          </div>
+          <div class="page-actions">
+            <div class="page-action-btn" onclick="event.stopPropagation(); downloadPage(${index})" title="تنزيل الصفحة">
+              <i class="fas fa-download"></i>
+            </div>
+            <div class="page-action-btn" onclick="event.stopPropagation(); previewPage(${index})" title="معاينة الصفحة">
+              <i class="fas fa-eye"></i>
+            </div>
+          </div>
+        `;
+        
+        pagesListContent.appendChild(pageItem);
+      });
+    }
+
+    // Select a page
+    function selectPage(index) {
+      currentPageIndex = index;
+      const page = sitePages[index];
+      
+      // Update UI
+      updatePagesListUI();
+      document.getElementById('codeFilename').textContent = page.filename;
+      
+      // Show page code if available
+      if (page.code) {
+        showCode(page.code);
+      }
+    }
+
+    // Show code in the editor
+    function showCode(code) {
+      document.getElementById("codeOutput").textContent = code;
+      Prism.highlightAll();
+      document.getElementById("previewFrame").srcdoc = code;
+    }
+
+    // Download a specific page
+    function downloadPage(index) {
+      const page = sitePages[index];
+      if (page.code) {
+        const blob = new Blob([page.code], { type: "text/html" });
+        saveAs(blob, page.filename);
+        addMessage(`✅ تم تنزيل صفحة ${page.name} بنجاح`, "bot");
+      }
+    }
+
+    // Preview a specific page
+    function previewPage(index) {
+      const page = sitePages[index];
+      if (page.code) {
+        const newTab = window.open();
+        newTab.document.write(page.code);
+        newTab.document.close();
+        addMessage(`✅ تم فتح صفحة ${page.name} في تبويب جديد`, "bot");
+      }
+    }
+
+    // Download current page
+    function downloadCurrentPage() {
+      downloadPage(currentPageIndex);
+    }
+
+    // Download all pages as ZIP
+    async function downloadAllPages() {
+      if (sitePages.length === 0) {
+        addMessage("❌ لا توجد صفحات للتنزيل", "bot");
+        return;
+      }
+      
+      // Show progress modal
+      showModal('تحميل جميع الصفحات', `
+        <div class="progress-container">
+          <div class="progress-label">
+            <span>جاري إنشاء ملف ZIP...</span>
+            <span id="progressPercent">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+      `, `
+        <button class="modal-btn modal-btn-cancel" onclick="closeModal()">إلغاء</button>
+      `);
+      
+      // Create ZIP file
+      const zip = new JSZip();
+      const progressFill = document.getElementById('progressFill');
+      const progressPercent = document.getElementById('progressPercent');
+      
+      // Add each page to ZIP
+      for (let i = 0; i < sitePages.length; i++) {
+        const page = sitePages[i];
+        if (page.code) {
+          zip.file(page.filename, page.code);
+          
+          // Update progress
+          const progress = ((i + 1) / sitePages.length) * 100;
+          progressFill.style.width = `${progress}%`;
+          progressPercent.textContent = `${Math.round(progress)}%`;
+          
+          // Small delay to show progress
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
+      }
+      
+      // Generate ZIP file
+      const content = await zip.generateAsync({ type: "blob" });
+      saveAs(content, "website.zip");
+      
+      // Close modal
+      closeModal();
+      
+      addMessage("✅ تم تنزيل جميع صفحات الموقع بنجاح", "bot");
+    }
+
+    // Preview all pages
+    function previewAllPages() {
+      if (sitePages.length === 0) {
+        addMessage("❌ لا توجد صفحات للمعاينة", "bot");
+        return;
+      }
+      
+      // Open each page in a new tab
+      sitePages.forEach((page, index) => {
+        if (page.code) {
+          setTimeout(() => {
+            const newTab = window.open();
+            newTab.document.write(page.code);
+            newTab.document.close();
+          }, index * 500); // Delay to avoid popup blockers
+        }
+      });
+      
+      addMessage(`✅ تم فتح ${sitePages.length} صفحات في تبويبات جديدة`, "bot");
+    }
+
+    // Generate common navigation and footer
+    function generateNavigation(pages) {
+      let navItems = '';
+      
+      pages.forEach(page => {
+        navItems += `<li><a href="${page.filename}">${page.name}</a></li>`;
+      });
+      
+      return `
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-logo">
+            <a href="index.html">الموقع</a>
+          </div>
+          <ul class="nav-menu">
+            ${navItems}
+          </ul>
+          <div class="nav-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </nav>
+      `;
+    }
+
+    function generateFooter() {
+      return `
+      <footer class="footer">
+        <div class="footer-container">
+          <div class="footer-content">
+            <div class="footer-section">
+              <h3>عن الموقع</h3>
+              <p>هذا النص وصفي لقسم معلومات الموقع. يمكنك تعديله حسب احتياجاتك.</p>
+            </div>
+            <div class="footer-section">
+              <h3>روابط سريعة</h3>
+              <ul>
+                <li><a href="index.html">الصفحة الرئيسية</a></li>
+                <li><a href="about.html">من نحن</a></li>
+                <li><a href="services.html">خدماتنا</a></li>
+                <li><a href="contact.html">تواصل معنا</a></li>
+              </ul>
+            </div>
+            <div class="footer-section">
+              <h3>تواصل معنا</h3>
+              <p>البريد الإلكتروني: info@example.com</p>
+              <p>الهاتف: +1234567890</p>
+              <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <p>&copy; 2023 جميع الحقوق محفوظة.</p>
+          </div>
+        </div>
+      </footer>
+      `;
+    }
+
+    // Ultra Advanced Design Keywords
+    const DESIGN_KEYWORDS = `
+SYSTEM RULES:
+- You are an elite web designer with 30+ years of experience in frontend development and UI/UX design.
+- Always return valid HTML/CSS/JS only (no explanations or text outside code).
+- Generate unique, innovative, and groundbreaking designs that reflect the site's identity and purpose.
+- Each page must include at least 10 different sections with unique layouts and interactions.
+- Never repeat the same layout or design patterns across different pages.
+- Each design must be a masterpiece that showcases advanced web development capabilities.
+- Implement the latest web technologies and best practices for performance, accessibility, and user experience.
+- All images must be relevant to the site's content and purpose.
+- Sections must follow a logical sequence that tells a story about the site.
+- Navigation between pages must be consistent and user-friendly.
+- All pages must share the same navigation bar and footer with consistent styling.
+
+CONSISTENT NAVIGATION AND FOOTER:
+- All pages must include the same navigation bar and footer structure.
+- Navigation must be responsive with a mobile menu toggle.
+- Footer must contain consistent information across all pages.
+- Navigation links must be functional and point to the correct pages.
+- Active page state must be highlighted in the navigation.
+
+SITE IDENTITY AWARENESS:
+- Analyze the user's request to understand the site's purpose and target audience.
+- Design elements, colors, and imagery must align with the site's identity.
+- For e-commerce: Focus on product display, shopping cart, checkout process, and user reviews.
+- For portfolio: Highlight projects, skills, experience, and contact information.
+- For blogs: Emphasize content readability, article categorization, and social sharing.
+- For corporate: Showcase company information, services, team, and client testimonials.
+- For SaaS: Demonstrate features, pricing, testimonials, and signup process.
+- For dashboards: Prioritize data visualization, user management, and analytics.
+- For news sites: Focus on article layout, categorization, and breaking news.
+- For educational sites: Highlight courses, learning paths, and progress tracking.
+- For restaurants: Display menu, reservation system, and location information.
+- For hotels: Showcase rooms, amenities, booking system, and photo galleries.
+- For real estate: Feature property listings, search filters, and agent information.
+
+PAGE-SPECIFIC REQUIREMENTS:
+- Home Page: Hero section, featured content, services/products highlights, testimonials, call-to-action
+- About Page: Company history, mission/vision, team members, company values, achievements
+- Services Page: Service listings, detailed descriptions, pricing, process flow, benefits
+- Contact Page: Contact form, location map, contact information, social media links
+- Blog Page: Article listings, categories, search functionality, newsletter signup
+- Portfolio Page: Project showcase, filters, project details, case studies
+- Shop Page: Product listings, categories, shopping cart, checkout process
+- FAQ Page: Frequently asked questions, search functionality, contact support
+- Custom Pages: Create content based on the page name and site identity
+
+NAVIGATION STRUCTURE:
+- Include consistent navigation across all pages with the following structure:
+\`\`\`html
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-logo">
+      <a href="index.html">الموقع</a>
+    </div>
+    <ul class="nav-menu">
+      <!-- Navigation items will be generated dynamically -->
+    </ul>
+    <div class="nav-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</nav>
+\`\`\`
+
+FOOTER STRUCTURE:
+- Include consistent footer across all pages with the following structure:
+\`\`\`html
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>عن الموقع</h3>
+        <p>هذا النص وصفي لقسم معلومات الموقع. يمكنك تعديله حسب احتياجاتك.</p>
+      </div>
+      <div class="footer-section">
+        <h3>روابط سريعة</h3>
+        <ul>
+          <li><a href="index.html">الصفحة الرئيسية</a></li>
+          <li><a href="about.html">من نحن</a></li>
+          <li><a href="services.html">خدماتنا</a></li>
+          <li><a href="contact.html">تواصل معنا</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>تواصل معنا</h3>
+        <p>البريد الإلكتروني: info@example.com</p>
+        <p>الهاتف: +1234567890</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2023 جميع الحقوق محفوظة.</p>
+    </div>
+  </div>
+</footer>
+\`\`\`
+
+SECTION IDEAS (Choose dynamically and based on site identity and page type):
+Hero Section with 3D effects and relevant imagery, Interactive About with timeline, 
+Innovative Services with hover cards, Unique Features with interactive demos, 
+Creative Products with 3D models, Portfolio with filterable gallery and lightbox, 
+Case Studies with animated statistics, Testimonials with carousel, 
+Clients showcase with logos, Interactive FAQ with accordion, Dynamic Pricing with toggle, 
+Contact with form validation and map, Newsletter subscription with animation, 
+Team with hover effects and social links, Achievements with counters, 
+Process Timeline with vertical steps, Blog Highlights with cards and hover effects,
+Gallery with masonry layout and filters, Video Section with custom player and playlist, 
+Stats with animated counters and charts, Technology Stack with icons and descriptions, 
+Industries with icons and hover effects, Call To Action with gradient background, 
+Roadmap with interactive progress, Interactive Map with markers and info windows, 
+Partners carousel with autoplay, Awards showcase with badges, 
+Certifications with modal details, Careers with filterable listings, 
+How It Works with step-by-step guide, Why Choose Us with comparison table, 
+Success Stories with quotes and images, Comparison Table with interactive features, 
+Demo Section with interactive prototype, Interactive Charts with real data, 
+Download App with mockups and store links, Support Center with categories and search, 
+Custom 404 Page with animation, Coming Soon Page with countdown, 
+Maintenance Page with progress indicator, Dark Mode Toggle with smooth transition, 
+Light Mode with vibrant colors, Accessibility Features with keyboard navigation, 
+Performance Optimization with lazy loading, SEO Optimization with structured data, 
+Social Media Integration with sharing buttons, Analytics Integration with tracking, 
+Security Features with CSP headers, Caching Strategies with service workers, 
+PWA Features with offline support, Web Components with reusable elements, 
+CSS Grid with complex layouts, Flexbox with responsive design, 
+CSS Variables with theming, CSS Animations with keyframes, 
+CSS Transitions with easing, JavaScript with ES6+ features, 
+React with hooks and components, Vue with composition API, 
+Angular with standalone components, WebGL with shaders and 3D graphics, 
+Canvas with drawings and animations, SVG with filters and animations, 
+Web Animations API with smooth transitions, Intersection Observer with scroll effects, 
+Web Components with shadow DOM, Service Workers with offline caching, 
+PWA with app-like experience, Dark Mode with system preference detection, 
+Light Mode with contrast optimization, Print Styles with optimized layout, 
+Custom Error Pages with helpful information, Loading States with skeletons, 
+Form Validation with real-time feedback, Smooth Scrolling with anchor links, 
+Sitemap with XML structure, Search Functionality with filtering and sorting, 
+Pagination with infinite scroll, Newsletter Subscription with email validation, 
+Social Sharing Buttons with counters, Comment System with moderation, 
+Rating System with stars and reviews, Wishlist with local storage, 
+Shopping Cart with checkout process, User Profile with settings and preferences, 
+Dashboard with analytics and reports, Notification System with real-time updates, 
+Chat System with online status and typing indicators, Calendar with events and reminders, 
+File Upload with drag and drop and progress, Map with markers and directions, 
+Weather Widget with forecast and location, News Feed with categories and infinite scroll, 
+Music Player with playlist and controls, Video Player with custom controls and subtitles, 
+Gallery with lightbox and zoom, Slider with touch support and autoplay, 
+Carousel with navigation and indicators, Tabs System with content and animation, 
+Accordion with expandable sections and icons, Modal with overlay and animation, 
+Tooltip with positioning and animation, Popover with interactive content, 
+Dropdown with menu items and icons, Progress Bar with animation and label, 
+Spinner with loading state and animation, Badge with notification and count, 
+Breadcrumb with navigation and links, Pagination with numbers and navigation, 
+Timeline with events and dates, Table with sorting, filtering, and pagination, 
+Form with validation and submission, Card with content and hover effects, 
+List with items and icons, Button with actions and states, Link with navigation and styles, 
+Image with lazy loading and placeholder, Video with autoplay and controls, 
+Audio with controls and playlist, Canvas with drawing and animation, 
+SVG with animation and interactivity, Iframe with content and sandbox, 
+Object with data and fallback, Embed with media and responsive design, 
+Source with resources and media types, Track with subtitles and captions, 
+Picture with responsive images and art direction, Figure with caption and image, 
+Blockquote with citation and styling, Code with syntax highlighting and copy, 
+Pre with formatting and scrollable content, Samp with output and styling, 
+Kbd with input and styling, Var with variable and styling, Mark with highlight and styling, 
+Small with text and styling, Time with date and formatting, Data with value and styling, 
+Meter with measurement and styling, Progress with completion and styling, 
+Output with result and styling, Dialog with conversation and styling, 
+Details with summary and content, Summary with heading and styling, 
+Template with content and cloning, Script with code and execution, 
+Style with rules and media queries, Link with relation and resources, 
+Meta with information and attributes, Base with URL and target, 
+Title with text and document, Head with metadata and links, 
+Body with content and structure, Html with document and language, 
+Doctype with declaration and standards.
+
+NAVIGATION REQUIREMENTS:
+- Include consistent navigation across all pages
+- Use semantic HTML5 nav element
+- Implement responsive navigation with mobile menu
+- Add active state indicators for current page
+- Include smooth scrolling for anchor links
+- Add breadcrumb navigation for sub-pages
+- Implement dropdown menus for complex navigation structures
+- Add search functionality in navigation
+- Include language switcher if needed
+- Add user account links if applicable
+- Implement sticky navigation for better UX
+- Add hover effects and transitions for navigation items
+- Include mobile-friendly touch targets
+- Add keyboard navigation support
+- Implement ARIA labels for accessibility
+
+ADVANCED DESIGN TRENDS (Mix at least 15 in each output):
+Glassmorphism with blur and transparency, Neumorphism with soft shadows and highlights, 
+3D Cards with depth and perspective, Parallax Scrolling with multiple layers and depth, 
+Animated Gradients with multiple colors and directions, Frosted Glass with blur and transparency, 
+Hover Animations with transitions and transforms, Micro-interactions with feedback and states, 
+Floating Elements with shadows and animations, Depth & Shadows with perspective and lighting, 
+Animated SVGs with paths and morphing, GSAP animations with timeline and controls, 
+Three.js 3D elements with lighting and materials, Lottie Animations with controls and interactivity, 
+Tailwind CSS with custom components and utilities, Bootstrap 5 with custom theme and components, 
+Google Fonts (Tajawal, Poppins, Inter, Playfair, Montserrat, Roboto, Open Sans, Raleway, 
+Nunito, Rubik, Mukta, Cairo, Amiri, El Messiri, Harmattan, Katibeh, Mada, Markazi Text, 
+Mirza, Reem Kufi, Scheherazade, Tajawal, Tahoma, Arial, Helvetica, Times New Roman, Georgia, 
+Verdana, Comic Sans MS, Impact, Lucida Console, Monaco, Courier New), 
+Font Awesome with icons and styles, CSS Grid with complex layouts and responsiveness, 
+Flexbox with responsive design and alignment, CSS Variables with theming and customization, 
+CSS Animations with keyframes and timing, CSS Transitions with easing and delays, 
+JavaScript with ES6+ features and modules, React with hooks and components, 
+Vue with composition API and reactivity, Angular with standalone components and modules, 
+WebGL with shaders and 3D graphics, Canvas with drawings and animations, 
+SVG with filters and animations, Web Animations API with smooth transitions, 
+Intersection Observer with scroll effects and lazy loading, Web Components with shadow DOM, 
+Service Workers with offline caching and push notifications, PWA with app-like experience, 
+Dark Mode with system preference detection and smooth transition, 
+Light Mode with contrast optimization and vibrant colors, Print Styles with optimized layout, 
+Custom Error Pages with helpful information and navigation, Loading States with skeletons, 
+Form Validation with real-time feedback and accessibility, Smooth Scrolling with anchor links, 
+Sitemap with XML structure and SEO, Search Functionality with filtering and sorting, 
+Pagination with infinite scroll and performance, Newsletter Subscription with email validation, 
+Social Sharing Buttons with counters and analytics, Comment System with moderation and replies, 
+Rating System with stars and reviews, Wishlist with local storage and synchronization, 
+Shopping Cart with checkout process and payment integration, User Profile with settings and preferences, 
+Dashboard with analytics and reports and charts, Notification System with real-time updates, 
+Chat System with online status and typing indicators, Calendar with events and reminders, 
+File Upload with drag and drop and progress and validation, Map with markers and directions, 
+Weather Widget with forecast and location, News Feed with categories and infinite scroll, 
+Music Player with playlist and controls and visualizations, Video Player with custom controls and subtitles, 
+Gallery with lightbox and zoom and filters, Slider with touch support and autoplay, 
+Carousel with navigation and indicators and autoplay, Tabs System with content and animation, 
+Accordion with expandable sections and icons, Modal with overlay and animation, 
+Tooltip with positioning and animation, Popover with interactive content, 
+Dropdown with menu items and icons, Progress Bar with animation and label, 
+Spinner with loading state and animation, Badge with notification and count, 
+Breadcrumb with navigation and links, Pagination with numbers and navigation, 
+Timeline with events and dates, Table with sorting, filtering, pagination, and responsive design, 
+Form with validation and submission, Card with content and hover effects, 
+List with items and icons, Button with actions and states, Link with navigation and styles, 
+Image with lazy loading and placeholder, Video with autoplay and controls, 
+Audio with controls and playlist, Canvas with drawing and animation, 
+SVG with animation and interactivity, Iframe with content and sandbox, 
+Object with data and fallback, Embed with media and responsive design, 
+Source with resources and media types, Track with subtitles and captions, 
+Picture with responsive images and art direction, Figure with caption and image, 
+Blockquote with citation and styling, Code with syntax highlighting and copy, 
+Pre with formatting and scrollable content, Samp with output and styling, 
+Kbd with input and styling, Var with variable and styling, Mark with highlight and styling, 
+Small with text and styling, Time with date and formatting, Data with value and styling, 
+Meter with measurement and styling, Progress with completion and styling, 
+Output with result and styling, Dialog with conversation and styling, 
+Details with summary and content, Summary with heading and styling, 
+Template with content and cloning, Script with code and execution, 
+Style with rules and media queries, Link with relation and resources, 
+Meta with information and attributes, Base with URL and target, 
+Title with text and document, Head with metadata and links, 
+Body with content and structure, Html with document and language, 
+Doctype with declaration and standards.
+
+STYLE REQUIREMENTS:
+- Unique, modern, professional, and innovative design that exceeds all templates and existing websites.
+- Mix at least 15 design trends in each output with seamless integration and harmony.
+- Must be ready-to-run code without syntax errors or warnings.
+- Use semantic HTML5 tags for better structure and accessibility.
+- Implement responsive design that works perfectly on all devices from 330px to 4K screens.
+- Add smooth animations and transitions for better user experience.
+- Include hover effects, focus states, and micro-interactions with attention to detail.
+- Optimize for performance with efficient code, lazy loading, and minimal resources.
+- Ensure accessibility with proper ARIA attributes, keyboard navigation, and screen reader support.
+- Implement SEO best practices with meta tags, structured data, and clean URLs.
+- Add social media integration with sharing buttons and meta tags.
+- Include analytics tracking with Google Analytics or similar.
+- Add security features with CSP headers, XSS protection, and secure coding practices.
+- Implement caching strategies for faster loading times.
+- Use modern JavaScript features with ES6+ syntax and modules.
+- Follow BEM methodology for CSS naming conventions.
+- Implement a design system with consistent colors, typography, spacing, and components.
+- Add custom fonts with proper fallbacks and loading strategies.
+- Use CSS Grid and Flexbox for complex layouts with responsiveness.
+- Implement dark mode and light mode with user preference detection and smooth transition.
+- Add print styles for better printing experience.
+- Include custom error pages with helpful information and navigation.
+- Add loading states and skeletons for better perceived performance.
+- Implement form validation with helpful error messages and accessibility.
+- Add smooth scrolling with anchor links and offset for fixed headers.
+- Include a sitemap for better SEO and navigation.
+- Implement a search functionality with filtering, sorting, and highlighting.
+- Add pagination for large content sets with infinite scroll option.
+- Include a newsletter subscription with email validation and success message.
+- Add social sharing buttons with counters and analytics.
+- Implement a comment system with moderation, replies, and voting.
+- Add a rating system with stars, reviews, and user feedback.
+- Include a wishlist or favorites feature with local storage and synchronization.
+- Implement a shopping cart with checkout process, payment integration, and order tracking.
+- Add a user profile with settings, preferences, and avatar upload.
+- Include a dashboard with analytics, reports, charts, and data visualization.
+- Implement a notification system with real-time updates, badges, and sounds.
+- Add a chat system with online status, typing indicators, and file sharing.
+- Include a calendar with events, reminders, and recurring events.
+- Implement a file upload with drag and drop, progress bar, and validation.
+- Add a map with markers, directions, and location search.
+- Include a weather widget with forecast, location, and interactive map.
+- Implement a news feed with categories, infinite scroll, and bookmarking.
+- Add a music player with playlist, controls, visualizations, and lyrics.
+- Include a video player with custom controls, subtitles, and playlist.
+- Implement a gallery with lightbox, zoom, filters, and slideshow.
+- Add a slider with touch support, autoplay, and navigation.
+- Include a carousel with navigation, indicators, and autoplay.
+- Implement a tabs system with content, animation, and lazy loading.
+- Add an accordion with expandable sections, icons, and animation.
+- Include a modal with overlay, animation, and focus management.
+- Implement a tooltip with positioning, animation, and HTML content.
+- Add a popover with interactive content, positioning, and animation.
+- Include a dropdown with menu items, icons, and keyboard navigation.
+- Implement a progress bar with animation, label, and indeterminate state.
+- Add a spinner with loading state, animation, and text.
+- Include a badge with notification, count, and animation.
+- Implement a breadcrumb with navigation, links, and current page.
+- Add a pagination with numbers, navigation, and ellipsis.
+- Include a timeline with events, dates, and vertical layout.
+- Implement a table with sorting, filtering, pagination, and responsive design.
+- Add a form with validation, submission, and accessibility.
+- Include a card with content, hover effects, and actions.
+- Implement a list with items, icons, and actions.
+- Add a button with actions, states, and loading.
+- Include a link with navigation, styles, and accessibility.
+- Implement an image with lazy loading, placeholder, and zoom.
+- Add a video with autoplay, controls, and playlist.
+- Include an audio with controls, playlist, and visualizations.
+- Implement a canvas with drawing, animation, and interaction.
+- Add an SVG with animation, filters, and interactivity.
+- Include an iframe with content, sandbox, and responsive design.
+- Implement an object with data, fallback, and accessibility.
+- Add an embed with media, responsive design, and controls.
+- Include a source with resources, media types, and optimization.
+- Implement a track with subtitles, captions, and synchronization.
+- Add a picture with responsive images, art direction, and optimization.
+- Include a figure with caption, image, and citation.
+- Implement a blockquote with citation, styling, and animation.
+- Add a code with syntax highlighting, copy, and line numbers.
+- Include a pre with formatting, scrollable content, and line numbers.
+- Implement a samp with output, styling, and animation.
+- Add a kbd with input, styling, and animation.
+- Include a var with variable, styling, and animation.
+- Implement a mark with highlight, styling, and animation.
+- Add a small with text, styling, and accessibility.
+- Include a time with date, formatting, and machine readability.
+- Implement a data with value, styling, and machine readability.
+- Add a meter with measurement, styling, and accessibility.
+- Include a progress with completion, styling, and animation.
+- Implement an output with result, styling, and animation.
+- Add a dialog with conversation, styling, and accessibility.
+- Include a details with summary, content, and animation.
+- Implement a summary with heading, styling, and accessibility.
+- Add a template with content, cloning, and accessibility.
+- Include a script with code, execution, and optimization.
+- Implement a style with rules, media queries, and optimization.
+- Add a link with relation, resources, and optimization.
+- Include a meta with information, attributes, and SEO.
+- Implement a base with URL, target, and optimization.
+- Add a title with text, document, and SEO.
+- Include a head with metadata, links, and optimization.
+- Implement a body with content, structure, and accessibility.
+- Add an html with document, language, and standards.
+- Include a doctype with declaration, standards, and compatibility.
+
+IMAGE REQUIREMENTS:
+- All images must be relevant to the site's content and purpose.
+- Use placeholder images from https://picsum.photos/seed/[relevance]/width/height.jpg where [relevance] is a keyword related to the site.
+- For e-commerce: Use product-related seeds like "product", "fashion", "electronics", etc.
+- For portfolio: Use work-related seeds like "project", "design", "development", etc.
+- For blogs: Use content-related seeds like "article", "writing", "blog", etc.
+- For corporate: Use business-related seeds like "business", "office", "team", etc.
+- For SaaS: Use software-related seeds like "software", "app", "interface", etc.
+- For dashboards: Use data-related seeds like "data", "analytics", "chart", etc.
+- For news: Use news-related seeds like "news", "media", "journalism", etc.
+- For education: Use education-related seeds like "education", "learning", "course", etc.
+- For restaurants: Use food-related seeds like "food", "restaurant", "dish", etc.
+- For hotels: Use hospitality-related seeds like "hotel", "room", "luxury", etc.
+- For real estate: Use property-related seeds like "property", "house", "apartment", etc.
+
+SEQUENCE REQUIREMENTS:
+- Sections must follow a logical sequence that tells a story about the site.
+- For home page: Hero → Featured Content → Services/Products → Testimonials → About → Contact
+- For about page: Hero → Company History → Mission/Vision → Team → Values → Achievements → Contact
+- For services page: Hero → Services Overview → Service Details → Process → Benefits → Pricing → Contact
+- For contact page: Hero → Contact Information → Contact Form → Map → FAQ → Social Media
+- For blog page: Hero → Featured Articles → Article Categories → Popular Posts → Newsletter → About
+- For portfolio page: Hero → Project Categories → Project Showcase → Case Studies → Testimonials → Contact
+- For shop page: Hero → Product Categories → Featured Products → Special Offers → Shopping Cart → Checkout
+- For FAQ page: Hero → FAQ Categories → Popular Questions → Search Form → Contact Support
+- For custom pages: Create a logical sequence based on the page name and content
+`;
+
+    // Set loading state
+    function setLoading(show) {
+      document.getElementById("loading").style.display = show ? "flex" : "none";
+    }
+
+    // Add message to chat
+    function addMessage(content, sender) {
+      const messagesDiv = document.getElementById("messages");
+      const msg = document.createElement("div");
+      msg.className = `msg ${sender}`;
+      msg.innerText = content;
+      messagesDiv.appendChild(msg);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    // Improve prompt
+    async function improvePrompt() {
+      const input = document.getElementById("userInput");
+      const text = input.value.trim();
+      if (!text) return;
+      
+      setLoading(true);
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${API_KEY}`
+          },
+          body: JSON.stringify({
+            model: "glm-4.5",
+            messages: [
+              { role: "system", content: "You are an expert prompt engineer with 30+ years of experience. Refine the user request to be precise, detailed, and optimized for generating exceptional web designs that reflect the site's identity." },
+              { role: "user", content: text }
+            ]
+          })
+        });
+        const data = await response.json();
+        const improved = data.choices?.[0]?.message?.content || text;
+        input.value = improved;
+        
+        // Detect site identity after improving prompt
+        detectSiteIdentity(improved);
+        
+        addMessage("✅ تم تحسين الأمر بنجاح", "bot");
+      } catch (e) {
+        console.error(e);
+        addMessage("❌ فشل تحسين الأمر", "bot");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    // Send code generation request
+    async function sendCode() {
+      const input = document.getElementById("userInput");
+      const text = input.value.trim();
+      if (!text) return;
+      
+      // Detect site identity
+      const siteType = detectSiteIdentity(text);
+      
+      // Get selected page types
+      const pageTypes = getSelectedPageTypes();
+      
+      // Generate pages
+      sitePages = generatePages(siteType, pageTypes);
+      
+      // Show pages list
+      document.getElementById('pagesListContainer').style.display = 'block';
+      
+      // Get design options
+      const designType = document.getElementById("designType").value;
+      const colorScheme = document.getElementById("colorScheme").value;
+      const creativityLevel = document.getElementById("creativityLevel").value;
+      const detailLevel = document.getElementById("detailLevel").value;
+      const advancedAnimations = document.getElementById("advancedAnimations").checked;
+      const scrollEffects = document.getElementById("scrollEffects").checked;
+      const responsiveDesign = document.getElementById("responsiveDesign").checked;
+      const seoOptimization = document.getElementById("seoOptimization").checked;
+      const darkModeToggle = document.getElementById("darkModeToggle").checked;
+      const performanceOptimization = document.getElementById("performanceOptimization").checked;
+      const relevantImages = document.getElementById("relevantImages").checked;
+      const logicalSequence = document.getElementById("logicalSequence").checked;
+      
+      addMessage(text, "user");
+      setLoading(true);
+      
+      try {
+        const designOptions = `
+Design Options:
+- Site Type: ${siteType || 'General'}
+- Design Type: ${designType}
+- Color Scheme: ${colorScheme}
+- Creativity Level: ${creativityLevel}/10
+- Detail Level: ${detailLevel}/10
+- Advanced Animations: ${advancedAnimations ? "Yes" : "No"}
+- Scroll Effects: ${scrollEffects ? "Yes" : "No"}
+- Responsive Design: ${responsiveDesign ? "Yes" : "No"}
+- SEO Optimization: ${seoOptimization ? "Yes" : "No"}
+- Dark Mode: ${darkModeToggle ? "Yes" : "No"}
+- Performance Optimization: ${performanceOptimization ? "Yes" : "No"}
+- Relevant Images: ${relevantImages ? "Yes" : "No"}
+- Logical Sequence: ${logicalSequence ? "Yes" : "No"}
+- Pages to Generate: ${pageTypes.map(p => typeof p === 'string' ? p : p.name).join(', ')}
+`;
+
+        // Generate common navigation and footer
+        const navigation = generateNavigation(sitePages);
+        const footer = generateFooter();
+        
+        // Generate each page
+        for (let i = 0; i < sitePages.length; i++) {
+          const page = sitePages[i];
+          
+          const pageSpecificPrompt = `
+Create a ${page.name} page for a ${siteType || 'general'} website.
+Page Type: ${page.type}
+Filename: ${page.filename}
+Navigation: ${navigation}
+Footer: ${footer}
+${designOptions}
+`;
+          
+          addMessage(`جاري إنشاء صفحة ${page.name}...`, "bot");
+          
+          const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${API_KEY}`
+            },
+            body: JSON.stringify({
+              model: "glm-4.5",
+              messages: [
+                { role: "system", content: DESIGN_KEYWORDS },
+                { role: "user", content: text + "\n\n" + pageSpecificPrompt }
+              ]
+            })
+          });
+          
+          const data = await response.json();
+          const reply = data.choices?.[0]?.message?.content || "";
+          
+          if (reply.includes("<html") || reply.includes("<!DOCTYPE")) {
+            page.code = reply;
+            addMessage(`✅ تم إنشاء صفحة ${page.name} بنجاح`, "bot");
+          } else {
+            addMessage(`❌ فشل إنشاء صفحة ${page.name}`, "bot");
+          }
+        }
+        
+        // Update UI
+        updatePagesListUI();
+        
+        // Select first page
+        if (sitePages.length > 0) {
+          selectPage(0);
+        }
+        
+        addMessage("✅ تم إنشاء جميع صفحات الموقع بنجاح", "bot");
+      } catch (e) {
+        console.error(e);
+        addMessage("❌ حدث خطأ في إنشاء التصميم", "bot");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    // Copy code to clipboard
+    function copyCode() {
+      const code = document.getElementById("codeOutput").textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        addMessage("✅ تم نسخ الكود بنجاح", "bot");
+      }).catch(err => {
+        addMessage("❌ فشل نسخ الكود", "bot");
+        console.error(err);
+      });
+    }
+
+    // Format code (placeholder)
+    function formatCode() {
+      addMessage("🔧 جاري تنسيق الكود...", "bot");
+      setTimeout(() => {
+        addMessage("✅ تم تنسيق الكود بنجاح", "bot");
+      }, 1000);
+    }
+
+    // Share design (placeholder)
+    function shareDesign() {
+      const code = document.getElementById("codeOutput").textContent;
+      if (code) {
+        addMessage("🔗 رابط المشاركة: https://example.com/design/abc123", "bot");
+      } else {
+        addMessage("❌ لا يوجد تصميم للمشاركة", "bot");
+      }
+    }
+
+    // Refresh preview
+    function refreshPreview() {
+      const code = document.getElementById("codeOutput").textContent;
+      if (code) {
+        document.getElementById("previewFrame").srcdoc = code;
+        addMessage("✅ تم تحديث المعاينة", "bot");
+      } else {
+        addMessage("❌ لا يوجد تصميم لمعاينته", "bot");
+      }
+    }
+
+    // Open preview in new tab
+    function openInNewTab() {
+      const code = document.getElementById("codeOutput").textContent;
+      if (code) {
+        const newTab = window.open();
+        newTab.document.write(code);
+        newTab.document.close();
+        addMessage("✅ تم فتح المعاينة في تبويب جديد", "bot");
+      } else {
+        addMessage("❌ لا يوجد تصميم لمعاينته", "bot");
+      }
+    }
+
+    // Toggle fullscreen for preview
+    function toggleFullscreen() {
+      const previewFrame = document.getElementById("previewFrame");
+      if (!document.fullscreenElement) {
+        previewFrame.requestFullscreen().catch(err => {
+          addMessage("❌ لا يمكن تفعيل وضع ملء الشاشة", "bot");
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // Set preview device
+    let currentDevice = 'desktop';
+    function setPreviewDevice(device) {
+      const iframe = document.getElementById("previewFrame");
+      const deviceButtons = document.querySelectorAll('.device-btn');
+      
+      // Update active button
+      deviceButtons.forEach(btn => btn.classList.remove('active'));
+      event.target.closest('.device-btn').classList.add('active');
+      
+      // Set device dimensions
+      if (device === 'mobile') {
+        iframe.style.width = '375px';
+        iframe.style.height = '667px';
+        iframe.style.margin = '0 auto';
+        currentDevice = 'mobile';
+        addMessage("📱 تم التبديل إلى معاينة الجوال", "bot");
+      } else if (device === 'tablet') {
+        iframe.style.width = '768px';
+        iframe.style.height = '1024px';
+        iframe.style.margin = '0 auto';
+        currentDevice = 'tablet';
+        addMessage("📱 تم التبديل إلى معاينة الجهاز اللوحي", "bot");
+      } else {
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.margin = '0';
+        currentDevice = 'desktop';
+        addMessage("🖥️ تم التبديل إلى معاينة سطح المكتب", "bot");
+      }
+    }
+
+    // Show help
+    function showHelp() {
+      addMessage("👋 مرحباً! أنا GLM-4.5 Elite Multi-Page Designer Studio بخبرة 30+ عام في تطوير الواجهات الأمامية. يمكنك الآن تصميم مواقع متعددة الصفحات كاملة. حدد الصفحات المطلوبة (بما في ذلك الصفحات المخصصة)، ثم صف الموقع الذي تريده بالتفصيل.", "bot");
+    }
+
+    // Modal functions
+    function showModal(title, body, footer) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalBody').innerHTML = body;
+      document.getElementById('modalFooter').innerHTML = footer;
+      document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    // Initialize with welcome message
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        addMessage("👋 مرحباً! أنا GLM-4.5 Elite Multi-Page Designer Studio بخبرة 30+ عام في تطوير الواجهات الأمامية. يمكنك الآن تصميم مواقع متعددة الصفحات كاملة.", "bot");
+      }, 3500);
+    });
+
+    // Handle Enter key in textarea
+    document.getElementById("userInput").addEventListener("keydown", function(e) {
+      if (e.key === "Enter" && e.ctrlKey) {
+        sendCode();
+      }
+    });
+
+    // Handle dark mode toggle
+    document.getElementById('darkModeToggle').addEventListener('change', function() {
+      if (this.checked) {
+        document.body.style.background = 'var(--darker)';
+        addMessage("🌙 تم تفعيل الوضع الداكن", "bot");
+      } else {
+        document.body.style.background = '#f8fafc';
+        addMessage("☀️ تم تفعيل الوضع الفاتح", "bot");
+      }
+    });
+
+    // Auto-detect site identity on input change
+    document.getElementById('userInput').addEventListener('input', function() {
+      detectSiteIdentity(this.value);
+    });
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('modal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    }
+  </script>
+</body>
+</html>

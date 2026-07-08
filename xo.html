@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المعركة المستحيلة - XO</title>
+    <style>
+        * {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+        
+        .game-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+        }
+        
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+            margin: 20px auto;
+            max-width: 320px;
+        }
+        
+        .cell {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .cell:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        .message {
+            min-height: 80px;
+            font-size: 1.3rem;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.4;
+        }
+        
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .restart-btn, .hope-btn {
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-weight: bold;
+        }
+        
+        .restart-btn {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .restart-btn:hover {
+            background: #ff5252;
+            transform: translateY(-3px);
+        }
+        
+        .hope-btn {
+            background: linear-gradient(45deg, #feca57, #ff9ff3);
+            color: #333;
+            display: none;
+            animation: pulse 2s infinite;
+            font-size: 1.3rem;
+            padding: 18px 25px;
+        }
+        
+        .hope-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+        
+        .win-message {
+            color: #feca57; /* Golden color for special win */
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .lose-message {
+            color: #f87171;
+            font-weight: bold;
+        }
+        
+        .special-win-message {
+            color: #feca57;
+            font-weight: bold;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>لعبة XO (المستحيلة)</h1>
+        
+        <div class="message" id="message">أتحداك تفوز. لن تستطيع أبداً.</div>
+        
+        <div class="board" id="board">
+            <button class="cell" data-index="0"></button>
+            <button class="cell" data-index="1"></button>
+            <button class="cell" data-index="2"></button>
+            <button class="cell" data-index="3"></button>
+            <button class="cell" data-index="4"></button>
+            <button class="cell" data-index="5"></button>
+            <button class="cell" data-index="6"></button>
+            <button class="cell" data-index="7"></button>
+            <button class="cell" data-index="8"></button>
+        </div>
+        
+        <div class="buttons">
+            <button class="hope-btn" id="hope-btn">⭐ زر الضعفاء ⭐</button>
+            <button class="restart-btn" id="restart">محاولة يائسة أخرى</button>
+        </div>
+        
+    </div>
+
+    <script>
+        const cells = document.querySelectorAll('.cell');
+        const messageEl = document.getElementById('message');
+        const restartBtn = document.getElementById('restart');
+        const hopeBtn = document.getElementById('hope-btn');
+        
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let currentPlayer = 'X';
+        let gameActive = true;
+        let letPlayerWin = false; // False = Impossible Mode, True = Hope Mode
+        
+        const winMessage = "فزت بالواسطة! لا تفكر حالك ذكي. <br><b>بما أنا سمحنالك تفوز، شكلك بتحتاج موقع قوي زي ذكائنا. تواصل معنا!</b>";
+        
+        const loseMessages = [
+            "خسرت! متوقع طبعاً 🤣",
+            "حاولت... وفشلت. كالعادة! 😜",
+            "الذكاء الاصطناعي يتفوق عليك. حقيقة مؤلمة. 🤖",
+            "لا تبكي، هي مجرد لعبة... أنت أضعف منها بكثير 😎",
+            "مستحيل تفوز، استسلم أفضل لك 😂"
+        ];
+        
+        cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+        restartBtn.addEventListener('click', () => startGame(false));
+        hopeBtn.addEventListener('click', () => startGame(true));
+
+        function startGame(hopeMode = false) {
+            board = ['', '', '', '', '', '', '', '', ''];
+            currentPlayer = 'X';
+            gameActive = true;
+            letPlayerWin = hopeMode;
+            
+            hopeBtn.style.display = 'none';
+            
+            if (hopeMode) {
+                messageEl.innerHTML = '<div class="special-win-message">تمام! الكمبيوتر راح يرأف بحالك هالمرة! 😉</div>';
+            } else {
+                messageEl.textContent = "أتحداك مرة أخرى. النتيجة معروفة مسبقاً.";
+            }
+
+            cells.forEach(cell => {
+                cell.textContent = '';
+                cell.style.color = 'white';
+            });
+        }
+        
+        function handleCellClick(e) {
+            const cell = e.target;
+            const index = parseInt(cell.dataset.index);
+            
+            if (board[index] !== '' || !gameActive || currentPlayer !== 'X') return;
+            
+            updateCell(cell, index);
+            checkResult();
+            
+            if (gameActive && currentPlayer === 'O') {
+                setTimeout(computerMove, 500);
+            }
+        }
+        
+        function updateCell(cell, index) {
+            board[index] = currentPlayer;
+            cell.textContent = currentPlayer;
+            cell.style.color = currentPlayer === 'X' ? '#4ade80' : '#f87171';
+        }
+        
+        function computerMove() {
+            let move;
+            if (letPlayerWin) {
+                move = findLosingMove();
+            } else {
+                move = findImpossibleMove();
+            }
+            
+            if (move !== -1 && board[move] === '') {
+                const cell = cells[move];
+                updateCell(cell, move);
+                checkResult();
+            }
+        }
+
+        function findImpossibleMove() {
+            // Unbeatable AI logic
+            // 1. Win if possible
+            let move = findBestMove('O');
+            if (move !== -1) return move;
+            
+            // 2. Block if player can win
+            move = findBestMove('X');
+            if (move !== -1) return move;
+
+            // 3. Take center if available
+            if (board[4] === '') return 4;
+            
+            // 4. Take opposite corner from player
+            if (board[0] === 'X' && board[8] === '') return 8;
+            if (board[8] === 'X' && board[0] === '') return 0;
+            if (board[2] === 'X' && board[6] === '') return 6;
+            if (board[6] === 'X' && board[2] === '') return 2;
+            
+            // 5. Take any empty corner
+            const corners = [0, 2, 6, 8];
+            const emptyCorners = corners.filter(i => board[i] === '');
+            if (emptyCorners.length > 0) {
+                return emptyCorners[Math.floor(Math.random() * emptyCorners.length)];
+            }
+            
+            // 6. Take any empty side
+            const sides = [1, 3, 5, 7];
+            const emptySides = sides.filter(i => board[i] === '');
+            if (emptySides.length > 0) {
+                return emptySides[Math.floor(Math.random() * emptySides.length)];
+            }
+            return -1;
+        }
+
+        function findBestMove(player) {
+            const winPatterns = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+            for (const pattern of winPatterns) {
+                const [a, b, c] = pattern;
+                const values = [board[a], board[b], board[c]];
+                if (values.filter(v => v === player).length === 2 && values.includes('')) {
+                    return pattern[values.indexOf('')];
+                }
+            }
+            return -1;
+        }
+
+        function findLosingMove() {
+            // Simple logic to let the player win: find any empty spot randomly.
+            const emptyIndices = board.map((val, idx) => val === '' ? idx : null).filter(val => val !== null);
+            if(emptyIndices.length === 0) return -1;
+
+            // Don't block the player's winning move
+            let playerWinningMove = findBestMove('X');
+            if(playerWinningMove !== -1) {
+                const nonBlockingMoves = emptyIndices.filter(i => i !== playerWinningMove);
+                if(nonBlockingMoves.length > 0) {
+                    return nonBlockingMoves[Math.floor(Math.random() * nonBlockingMoves.length)];
+                }
+            }
+            return emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+        }
+        
+        function checkResult() {
+            const winPatterns = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+            let roundWon = false;
+            for (const pattern of winPatterns) {
+                const [a, b, c] = pattern;
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    gameActive = false;
+                    if (board[a] === 'X') {
+                         messageEl.innerHTML = `<div class="win-message">${winMessage}</div>`;
+                    } else {
+                        const randomMessage = loseMessages[Math.floor(Math.random() * loseMessages.length)];
+                        messageEl.innerHTML = `<div class="lose-message">${randomMessage}</div>`;
+                        hopeBtn.style.display = 'block';
+                    }
+                    roundWon = true;
+                    return;
+                }
+            }
+            
+            if (!board.includes('') && !roundWon) {
+                gameActive = false;
+                messageEl.textContent = "تعادل! هذا أقصى ما يمكنك فعله، لن تفوز أبداً.";
+                hopeBtn.style.display = 'block';
+                return;
+            }
+            
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            
+            if (gameActive) {
+                 if (currentPlayer === 'O') {
+                    messageEl.textContent = "دور العقل المدبر (الكمبيوتر)...";
+                } else {
+                    messageEl.textContent = "دورك... حاول أن تفعل شيئاً ذا معنى.";
+                }
+            }
+        }
+        
+        // Initial game start
+        startGame();
+    </script>
+</body>
+</html>
